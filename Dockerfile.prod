@@ -1,0 +1,22 @@
+#
+FROM python:3.11.5
+
+#
+WORKDIR /fastapi
+
+ENV APP_ENV prod
+
+COPY requirements.txt ./
+
+# Copy the .env file into the container
+COPY .env.prod .
+
+#
+RUN pip install --no-cache-dir -r requirements.txt
+EXPOSE 8000
+
+#
+COPY . .
+
+#
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

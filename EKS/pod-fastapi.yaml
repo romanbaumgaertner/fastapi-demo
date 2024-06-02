@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  
+spec:
+  containers:
+  - name: employee
+    image: 753978830035.dkr.ecr.us-east-1.amazonaws.com/fastapideemo:4.0
+    ports:
+    - containerPort: 8000
