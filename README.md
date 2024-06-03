@@ -15,22 +15,36 @@ The FastAPI demo uses
 - Pscyogp for PostgreSQL access
 
 
-## How too Run
+## How to Run
 
+### Setup project
 To run the application you need to 
 
-1. clone the project
+1. clone the project into your work directory
+```
+git clone https://github.com/romanbaumgaertner/fastapi-demo
+```
 2. create a virtual environment
-3. execute pip install -r requirements.txt
-   
+
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+
+3. install packages
+```
+pip install -r requirements.txt
+```
 
 ### Locally
 
 To run the application locally do
 
 1. run PostgreSQL from a docker container
-2. run the application with fastapi dev main.py or  uvicorn main:app --reload
-3. use curl or Postman to send REST APIs 
+   ```
+   ```
+3. run the application with fastapi dev main.py or  uvicorn main:app --reload
+4. use curl or Postman to send REST APIs 
 
 #### Using FastAPI dev
 
