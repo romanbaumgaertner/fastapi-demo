@@ -96,9 +96,40 @@ To run the application locally do
 
 #### Running on EKS
 
-1. Create EKS cluster using AWS EKS console
+For PostgreSQL use the managed AWS RDS - PostgreSQL
+
+1. Create EKS cluster using AWS EKS console. Deploy the cluster in the same VPC as the AWS RDS PostgreSQL
 2. Create nodegroup using console or CLI
+
+**CLI**
+
+   Create a role for the nodegroup
+   ```
+   ```
+
+   ```
+   aws eks create-nodegroup --cluster-name eks-demo \
+       --nodegroup-name fastapi-nodegroup \
+       --subnets <sub-net> \
+       --node-role <role for nodegroup> \
+       --scaling-config minSize=1,maxSize=2,desiredSize=2 --instance-types t3.medium
+   ```
+
 3. Create pod or deployment
+
+Use the yaml file in folder EKS for creating the deployment.
+
+```
+ kubectl apply -f fastapi.yaml 
+```
+   
 4. Create LoadBalancer service
+
+The created deployment is not yet public reachable. Additionally a service has to be setup to expose a public IP address. This can be done be setting up a LoadBalancer service.
+
+Use for this the service file in the EKS folder. Make sure that the labels in the service matches the app name in the deployment yaml.
+```
+ kubectl apply -f service.yaml 
+```
 
    
