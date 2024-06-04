@@ -22,7 +22,7 @@ async def get_root():
         </head>
         <body>
             <h1>Cloud Setup of FastAPI-Demo</h1>
-            <img src="imgs/fastapi.jpg">
+            <!--img src="imgs/fastapi.jpg"-->
         </body>
     </html>
     """
@@ -41,7 +41,7 @@ async def get_employee(id: int):
 
         print( type(entry) )
     except (Exception, Error):
-        raise HTTPException(status_code=400, detail="Not found")
+        raise HTTPException(status_code=404, detail="Not found")
     return entry
 
 
@@ -70,7 +70,7 @@ async def delete_employee(id: int):
         db_util.delete_employee(id)
 
     except (Exception, Error):
-        raise HTTPException(status_code=400, detail="Not found")
+        raise HTTPException(status_code=404, detail="Not found")
     return "deleted resource"
 
 
