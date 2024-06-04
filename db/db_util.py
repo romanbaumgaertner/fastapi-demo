@@ -224,6 +224,13 @@ def get_employee(id: int):
 
 def delete_employee(id:int):
     '''
+    Deletes an employee with the given id
+
+    Parameters:
+        id : int  resource id
+
+    Raises:
+        Exceptions
     '''
 
     configuration = DbConfig()

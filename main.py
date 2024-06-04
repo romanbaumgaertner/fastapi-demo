@@ -12,7 +12,7 @@ app = FastAPI()
 
 
 @app.get("/api/employees")
-async def get_all(id: int):
+async def get_all():
     return {"get all - not implemented"}
 
 
