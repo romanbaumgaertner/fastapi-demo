@@ -14,12 +14,6 @@ db_host = "127.0.0.1"  # e.g., "localhost"
 db_port = "5432"  # default PostgreSQL ports
 '''
 
-global db_name 
-global db_user 
-global db_password 
-global db_host 
-global db_port 
-
 class DbConfig():
     '''
     db_name:str
@@ -118,6 +112,9 @@ def create_employee(employee):
                        - dob (str): The date of birth of the employee in YYYY-MM-DD format.
                        - email (str): The email address of the employee.
 
+    Returns:
+    int: The id of the newly created employee.
+
     Raises:
     IntegrityError: If there is a database integrity error, such as a duplicate employee_id.
     Exception: If any other error occurs while connecting to or interacting with the PostgreSQL database.
@@ -139,12 +136,15 @@ def create_employee(employee):
         insert_query = """
             INSERT INTO employee (name, employee_id, department, dob, email)
             VALUES (%s, %s, %s, %s, %s)
+            RETURNING id;
         """
 
         cursor.execute(insert_query, (employee.name, employee.employee_id, employee.department, employee.dob, employee.email))
+        employee_id = cursor.fetchone()[0]
         connection.commit()
 
-        print("Employee inserted successfully!")
+        print(f"Employee with id {employee_id} created successfully!")
+        return employee_id
 
     except IntegrityError as e: 
         raise e

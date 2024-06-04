@@ -11,7 +11,7 @@ import helper
 app = FastAPI()
 
 
-@app.get()
+@app.get("/")
 async def get_root():
     return {"message": "Hello to FastAPI"}
 
@@ -41,7 +41,8 @@ async def create_employee_json(employee: employee.Employee):
         if db_util.calculate_age(employee.dob) < 18:
             raise HTTPException(status_code=400, detail="Employee too young")
 
-        db_util.create_employee(employee)
+        employee_id = db_util.create_employee(employee)
+        return  {"id": employee_id}
     except IntegrityError:
         raise HTTPException(status_code=409, detail="Duplicate employee")
     except (Exception, Error):

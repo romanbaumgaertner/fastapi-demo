@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: my-container
-        image: 753978830035.dkr.ecr.us-east-1.amazonaws.com/fastapideemo:4.0
+        image: 753978830035.dkr.ecr.us-east-1.amazonaws.com/fastapideemo:6.0
         ports:
         - containerPort: 8000
