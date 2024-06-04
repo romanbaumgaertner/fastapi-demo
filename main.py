@@ -1,4 +1,6 @@
 from fastapi import FastAPI, Form, HTTPException
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import EmailStr
 from db import db_util
 from models import employee
@@ -9,11 +11,22 @@ import os
 import helper
 
 app = FastAPI()
-
+app.mount("/imgs", StaticFiles(directory="static/images"), name='images')
 
 @app.get("/")
 async def get_root():
-    return {"message": "Hello to FastAPI"}
+    html_fastapi = """
+    <html>
+        <head>
+            <title>FastAPI - demo</title>
+        </head>
+        <body>
+            <h1>Cloud Setup of FastAPI-Demo</h1>
+            <img src="imgs/fastapi.jpg">
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_fastapi)
 
 @app.get("/api/employees")
 async def get_all():
