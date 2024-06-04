@@ -11,6 +11,10 @@ import helper
 app = FastAPI()
 
 
+@app.get()
+async def get_root():
+    return {"message": "Hello to FastAPI"}
+
 @app.get("/api/employees")
 async def get_all():
     return {"get all - not implemented"}
