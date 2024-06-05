@@ -1,6 +1,7 @@
 import psycopg2 
 from datetime import datetime, date
 from psycopg2 import Error, IntegrityError
+from psycopg2.extras import RealDictCursor
 from fastapi import HTTPException
 from models import employee
 import helper
@@ -221,6 +222,80 @@ def get_employee(id: int):
             cursor.close()
             connection.close()
             print("DB connection is closed")
+
+def get_all_employees():
+    '''
+    Gets all employees
+
+    Parameters:
+        None    
+
+    Raises:
+        Exceptions
+
+    Returns:
+        list of employee objects
+    '''
+    configuration = DbConfig()
+
+    try:
+        connection = create_connection(configuration.db_name, 
+                             configuration.db_user, 
+                             configuration.db_password, 
+                             configuration.db_host, 
+                             configuration.db_port)
+
+        cursor = connection.cursor(cursor_factory=RealDictCursor)
+        cursor.execute("SELECT * FROM employee")
+        employees = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return employees
+    except (Exception, Error) as error:
+        print( error )
+        raise Exception(error)
+    
+def update_employee(id: int, employee: employee.Employee):
+    '''
+    Updates an employee with the given id
+
+    Parameters:
+        id : int  resource id
+
+    Raises:
+        Exceptions Update an employee with the given id
+    '''
+
+    configuration = DbConfig()
+
+    try:
+        connection = create_connection(configuration.db_name, 
+                             configuration.db_user, 
+                             configuration.db_password, 
+                             configuration.db_host, 
+                             configuration.db_port)  
+        
+        cursor = connection.cursor()
+        cursor.execute("""
+            UPDATE employee
+            SET name = %s, employee_id = %s, department = %s, dob = %s, email = %s
+            WHERE id = %s
+        """, (employee.name, employee.employee_id, employee.department, employee.dob, employee.email, id))
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+        if cursor.rowcount == 0:
+            print( type( empl ))
+            raise HTTPException(status_code=404, detail="Employee not found")
+        return {"message": "Employee updated successfully"}         
+          
+    except (Exception, Error) as error:
+        print( error )
+        raise Exception(error)
+    
+
 
 def delete_employee(id:int):
     '''

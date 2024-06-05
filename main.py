@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, HTTPException
+from fastapi import FastAPI, HTTPException, Body
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import EmailStr
@@ -30,7 +30,12 @@ async def get_root():
 
 @app.get("/api/employees")
 async def get_all():
-    return {"get all - not implemented"}
+    try:
+        employees = db_util.get_all_employees()
+    
+    except (Exception, Error):
+        raise HTTPException(status_code=400, detail="Bad request")
+    return employees
 
 
 @app.get("/api/employees/{id}")
@@ -47,7 +52,7 @@ async def get_employee(id: int):
 
 # Alternatively, using Pydantic model for JSON payload
 @app.post("/api/employees")
-async def create_employee_json(employee: employee.Employee):
+async def create_employee(employee: employee.Employee):
 
     try: 
         # age check
@@ -63,6 +68,16 @@ async def create_employee_json(employee: employee.Employee):
 
     return HTTPException(status_code=201)
 
+@app.put("/api/employees/{id}")
+async def update_employee(id: int, empl: employee.Employee = Body(...)):
+    try:
+        print( type(empl ) )
+        db_util.update_employee(id, empl)
+
+    except (Exception, Error):
+        raise HTTPException(status_code=404, detail="Not found")
+    return {"message":"updated resource"}
+
 @app.delete("/api/employees/{id}")
 async def delete_employee(id: int):
     try:
@@ -71,7 +86,7 @@ async def delete_employee(id: int):
 
     except (Exception, Error):
         raise HTTPException(status_code=404, detail="Not found")
-    return "deleted resource"
+    return {"message":"deleted resource"}
 
 
 '''
